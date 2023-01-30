@@ -9,10 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WordleAppTest
 {
+
+    public final String testFilePath = "src\\test\\resources\\wordlist-test.txt";
+    public final String wordFilePath = "src\\main\\resources\\wordlist.txt";
     @Test
     public void shouldLoadWordlist() throws FileNotFoundException
     {
-        ArrayList<String> wordlist = WordleApp.loadWordlist("src\\test\\resources\\wordlist-test.txt");
+        ArrayList<String> wordlist = WordleApp.loadWordlist(testFilePath);
         // test wordlist only contains 3 words, so wordlist should have the size of 3
         assertEquals(3, wordlist.size());
     }
@@ -20,10 +23,10 @@ public class WordleAppTest
     @Test
     public void fetchRandomWord() throws FileNotFoundException
     {
-        String randomWord1 = WordleApp.randomWordSelector("src\\test\\resources\\wordlist-test.txt");
+        String randomWord1 = WordleApp.randomWordSelector(wordFilePath);
         assertNotNull(randomWord1);
 
-        String randomWord2 = WordleApp.randomWordSelector("src\\test\\resources\\wordlist-test.txt");
+        String randomWord2 = WordleApp.randomWordSelector(wordFilePath);
         assertNotNull(randomWord2);
 
     }
@@ -57,7 +60,7 @@ public class WordleAppTest
         String validWord1 = "fetch";
         String validWord2 = "cuppa";
         String invalidWord = "2";
-        ArrayList<String> wordlist = WordleApp.loadWordlist("src\\main\\resources\\wordlist.txt");
+        ArrayList<String> wordlist = WordleApp.loadWordlist(wordFilePath);
         boolean isMatch1 = WordleApp.isValidWord(validWord1, wordlist);
         assertTrue(isMatch1);
 
