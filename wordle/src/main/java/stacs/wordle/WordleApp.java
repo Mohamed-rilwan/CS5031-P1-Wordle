@@ -12,7 +12,8 @@ public class WordleApp {
         System.out.println("Welcome to CS5031 - Wordle");
         int maxTries = 6;
         int trial = 1;
-        String filePath = "src\\test\\resources\\wordlist-test.txt";
+        String filePath = "src\\main\\resources\\wordlist.txt";
+        ArrayList<String> wordList = loadWordlist(filePath);
         String wordOfTheDay = randomWordSelector(filePath);
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
         boolean status = false;
@@ -21,7 +22,11 @@ public class WordleApp {
             String userGuess = scanner.nextLine().trim();
             if (userGuess.length() != 5) {
                 System.out.println("Please enter a valid 5-letter word");
-            } else {
+            }
+            else if(!wordList.contains(userGuess)){
+                System.out.println("Not a valid english word");
+            }
+            else {
                 status = matchUserInput(wordOfTheDay, userGuess);
                 trial++;
                 if (status) {
