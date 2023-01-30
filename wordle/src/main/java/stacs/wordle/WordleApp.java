@@ -8,36 +8,12 @@ import java.util.*;
 import java.nio.file.Path;
 
 public class WordleApp {
+    public static final String filePath = "src\\main\\resources\\wordlist.txt";
+
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Welcome to CS5031 - Wordle");
-        int maxTries = 6;
-        int trial = 1;
-        String filePath = "src\\main\\resources\\wordlist.txt";
-        ArrayList<String> wordList = loadWordlist(filePath);
-        String wordOfTheDay = randomWordSelector(filePath);
-        Scanner scanner = new Scanner(new InputStreamReader(System.in));
-        boolean status = false;
-        do {
-            System.out.println("Enter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3 ? "third" : trial == 4 ? "fourth" : trial == 5 ? "fifth" : "sixth") + " guess");
-            String userGuess = scanner.nextLine().trim();
-            if (userGuess.length() != 5) {
-                System.out.println("Please enter a valid 5-letter word");
-            }
-            else if(!wordList.contains(userGuess)){
-                System.out.println("Not a valid english word");
-            }
-            else {
-                status = matchUserInput(wordOfTheDay, userGuess);
-                trial++;
-                if (status) {
-                    System.out.println("Congratulations! Word of the day : " + wordOfTheDay);
-                    break;
-                }
-            }
-        }
-        while (trial < maxTries + 1);
-        System.out.println(!status ? "Better luck next time!" + "\n" + "Word of the day : " + wordOfTheDay : "");
-
+        gameRules();
+        wordleGame();
     }
 
     /**
@@ -118,5 +94,48 @@ public class WordleApp {
      */
     public static boolean isValidWord(String input, ArrayList<String> validWords) {
         return validWords.contains(input);
+    }
+
+    public static void wordleGame() throws FileNotFoundException {
+        int maxTries = 6;
+        int trial = 1;
+
+        ArrayList<String> wordList = loadWordlist(filePath);
+        String wordOfTheDay = randomWordSelector(filePath);
+        Scanner scanner = new Scanner(new InputStreamReader(System.in));
+        boolean status = false;
+        do {
+            System.out.println("Enter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3 ? "third" : trial == 4 ? "fourth" : trial == 5 ? "fifth" : "sixth") + " guess");
+            String userGuess = scanner.nextLine().trim();
+            if (userGuess.length() != 5) {
+                System.out.println("Please enter a valid 5-letter word");
+            } else if (!wordList.contains(userGuess)) {
+                System.out.println("Not a valid english word");
+            } else {
+                status = matchUserInput(wordOfTheDay, userGuess);
+                trial++;
+                if (status) {
+                    System.out.println("Congratulations! Word of the day : " + wordOfTheDay);
+                    break;
+                }
+            }
+        }
+        while (trial < maxTries + 1);
+        System.out.println(!status ? "Better luck next time!" + "\n" + "Word of the day : " + wordOfTheDay : "");
+    }
+
+    public static void gameRules() {
+        System.out.println("\nHOW TO PLAY\nGuess the wordle in 6 tries \n");
+        System.out.println("• Each guess must be a valid 5-letter word.\n• The color of the letters will change to show how close your guess was to the word.\n");
+        System.out.println("Example");
+        System.out.println(ConsoleColor.GREEN + "h " + ConsoleColor.RESET + " : " + ConsoleColor.GREEN_BACKGROUND + "Correct" + ConsoleColor.RESET);
+        System.out.println(ConsoleColor.YELLOW + "y " + ConsoleColor.RESET + " : " + ConsoleColor.YELLOW_BACKGROUND + "Present" + ConsoleColor.RESET);
+        System.out.println(ConsoleColor.GREEN + "p " + ConsoleColor.RESET + " : " + ConsoleColor.GREEN_BACKGROUND + "Correct" + ConsoleColor.RESET);
+        System.out.println(ConsoleColor.GREEN + "p " + ConsoleColor.RESET + " : " + ConsoleColor.GREEN_BACKGROUND + "Correct" + ConsoleColor.RESET);
+        System.out.println(ConsoleColor.RED + "e " + ConsoleColor.RESET + " : " + ConsoleColor.RED_BACKGROUND + "Incorrect" + ConsoleColor.RESET + "\n");
+        System.out.println("Letters " + ConsoleColor.GREEN + "h, p ,p" + ConsoleColor.RESET + " are in correct spot, and letter "
+                + ConsoleColor.YELLOW + "y" + ConsoleColor.RESET + " is in the word but in wrong position and letter "
+                + ConsoleColor.RED + "e" + ConsoleColor.RESET + " is not in any spot ");
+        System.out.println("The Correct word is HAPPY\n");
     }
 }
