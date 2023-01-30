@@ -12,26 +12,26 @@ public class WordleApp {
         System.out.println("Welcome to CS5031 - Wordle");
         int maxTries = 6;
         int trial = 1;
-        String fielPath = "D:\\University_Of_St_Andrews\\Semester 2\\CS5031 - Software Engineering Practice\\Coursework\\P1-Wordle\\CS5031-P1-Wordle\\wordle\\src\\test\\resources\\wordlist-test.txt";
-        String wordOfTheDay = randomWordSelector(fielPath);
+        String filePath = "src\\test\\resources\\wordlist-test.txt";
+        String wordOfTheDay = randomWordSelector(filePath);
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
+        boolean status = false;
         do {
-            System.out.println("Enter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3? "third" : trial == 4 ?  "fourth" : trial == 5 ? "fifth" : "sixth")  +" guess");
+            System.out.println("Enter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3 ? "third" : trial == 4 ? "fourth" : trial == 5 ? "fifth" : "sixth") + " guess");
             String userGuess = scanner.nextLine().trim();
             if (userGuess.length() != 5) {
                 System.out.println("Please enter a valid 5-letter word");
             } else {
-                boolean status = matchUserInput(wordOfTheDay, userGuess);
+                status = matchUserInput(wordOfTheDay, userGuess);
                 trial++;
                 if (status) {
-                    System.out.println("Congratulations!");
+                    System.out.println("Congratulations! Word of the day : " + wordOfTheDay);
                     break;
                 }
             }
         }
-        while(trial < maxTries + 1);
-        System.out.println("Better luck next time!");
-        System.out.println("Word of the day : " + wordOfTheDay);
+        while (trial < maxTries + 1);
+        System.out.println(!status ? "Better luck next time!" + "\n" + "Word of the day : " + wordOfTheDay : "");
 
     }
 
@@ -86,20 +86,32 @@ public class WordleApp {
      */
     public static boolean matchUserInput(String wordForTheDay, String input) {
         boolean status = true;
-        String[] inputCharacters = input.split("");
-        String[] guessCharacters = wordForTheDay.split("");
+        String[] inputCharacters = input.toLowerCase().split("");
+        String[] guessCharacters = wordForTheDay.toLowerCase().split("");
         List<String> vowelsList = Arrays.asList(wordForTheDay.split(""));
         for (int index = 0; index < inputCharacters.length; index++) {
-            if (Objects.equals((inputCharacters[index]), vowelsList.get(index))) {
-                System.out.println(ConsoleColor.GREEN + inputCharacters[index] + " : " + "Correct" + ConsoleColor.RESET);
+            if (inputCharacters[index].equalsIgnoreCase(vowelsList.get(index))) {
+                System.out.println(ConsoleColor.GREEN + inputCharacters[index] + ConsoleColor.RESET + " : " + ConsoleColor.GREEN_BACKGROUND + "Correct" + ConsoleColor.RESET);
             } else if ((!inputCharacters[index].equals(guessCharacters[index])) && vowelsList.contains(inputCharacters[index])) {
-                System.out.println(ConsoleColor.YELLOW + inputCharacters[index] + " : " + "Present" + ConsoleColor.RESET);
+                System.out.println(ConsoleColor.YELLOW + inputCharacters[index] + ConsoleColor.RESET + " : " + ConsoleColor.YELLOW_BACKGROUND + "Present" + ConsoleColor.RESET);
                 status = false;
             } else {
-                System.out.println(ConsoleColor.RED + inputCharacters[index] + " : " + "Incorrect" + ConsoleColor.RESET);
+                System.out.println(ConsoleColor.RED + inputCharacters[index] + ConsoleColor.RESET + " : " + ConsoleColor.RED_BACKGROUND + "Incorrect" + ConsoleColor.RESET);
                 status = false;
             }
         }
         return status;
+    }
+
+    /**
+     * This method is used to check if the
+     * entered user word is a valid 5-letter english word
+     *
+     * @param input      - guesses from the user
+     * @param validWords - list of all valid 5-letter words
+     * @return - true if the word is valid
+     */
+    public static boolean isValidWord(String input, ArrayList<String> validWords) {
+        return validWords.contains(input);
     }
 }

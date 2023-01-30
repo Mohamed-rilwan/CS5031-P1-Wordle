@@ -12,7 +12,7 @@ public class WordleAppTest
     @Test
     public void shouldLoadWordlist() throws FileNotFoundException
     {
-        ArrayList<String> wordlist = WordleApp.loadWordlist("D:\\University_Of_St_Andrews\\Semester 2\\CS5031 - Software Engineering Practice\\Coursework\\P1-Wordle\\CS5031-P1-Wordle\\wordle\\src\\test\\resources\\wordlist-test.txt");
+        ArrayList<String> wordlist = WordleApp.loadWordlist("src\\test\\resources\\wordlist-test.txt");
         // test wordlist only contains 3 words, so wordlist should have the size of 3
         assertEquals(3, wordlist.size());
     }
@@ -20,10 +20,10 @@ public class WordleAppTest
     @Test
     public void fetchRandomWord() throws FileNotFoundException
     {
-        String randomWord1 = WordleApp.randomWordSelector("D:\\University_Of_St_Andrews\\Semester 2\\CS5031 - Software Engineering Practice\\Coursework\\P1-Wordle\\CS5031-P1-Wordle\\wordle\\src\\test\\resources\\wordlist-test.txt");
+        String randomWord1 = WordleApp.randomWordSelector("src\\test\\resources\\wordlist-test.txt");
         assertNotNull(randomWord1);
 
-        String randomWord2 = WordleApp.randomWordSelector("D:\\University_Of_St_Andrews\\Semester 2\\CS5031 - Software Engineering Practice\\Coursework\\P1-Wordle\\CS5031-P1-Wordle\\wordle\\src\\test\\resources\\wordlist-test.txt");
+        String randomWord2 = WordleApp.randomWordSelector("src\\test\\resources\\wordlist-test.txt");
         assertNotNull(randomWord2);
 
     }
@@ -39,6 +39,32 @@ public class WordleAppTest
         String wordOfTheDay1 = "fetch";
         String userInput1 = "feSeh";
         boolean isMatch1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1);
-        assertFalse(!isMatch1);
+        assertFalse(isMatch1);
+    }
+
+    //Test for exception thrown on invalid file path
+    @Test
+    public void inValidFile() {
+        Exception exception = assertThrows(FileNotFoundException.class, () -> WordleApp.loadWordlist("abc.txt"));
+        String expectedMessage = "File not found: abc.txt";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    @Test
+    public void isValidWord() throws FileNotFoundException {
+        String validWord1 = "fetch";
+        String validWord2 = "cuppa";
+        String invalidWord = "2";
+        ArrayList<String> wordlist = WordleApp.loadWordlist("src\\main\\resources\\wordlist.txt");
+        boolean isMatch1 = WordleApp.isValidWord(validWord1, wordlist);
+        assertTrue(isMatch1);
+
+        boolean isMatch2 = WordleApp.isValidWord(validWord2, wordlist);
+        assertTrue(isMatch2);
+
+        boolean isMatch3 = WordleApp.isValidWord(invalidWord, wordlist);
+        assertFalse(isMatch3);
     }
 }
