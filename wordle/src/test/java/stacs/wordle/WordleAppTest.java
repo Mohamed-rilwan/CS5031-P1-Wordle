@@ -35,5 +35,10 @@ public class WordleAppTest
         String userInput = "fetch";
         boolean isMatch = WordleApp.matchUserInput(wordOfTheDay, userInput);
         assertTrue(isMatch);
+
+        String wordOfTheDay1 = "fetch";
+        String userInput1 = "feSeh";
+        boolean isMatch1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1);
+        assertFalse(!isMatch1);
     }
 }
