@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 
+/**
+ * The following class builds the GUI interface for Wordle game
+ */
 public class WordleGui extends JFrame implements ActionListener {
     public static int maxTries = 6;
     private static JFrame frame;
@@ -139,6 +142,11 @@ public class WordleGui extends JFrame implements ActionListener {
         guess.setText("");
     }
 
+    /**
+     * Methods to check if each of the entered input is valid
+     * @param InputWordleWord  - users guesses during the game
+     * @return array of strings that states the correct position of letters
+     */
     public static String[] playWordle(String InputWordleWord) {
         status = false;
         tries++;
@@ -183,6 +191,9 @@ public class WordleGui extends JFrame implements ActionListener {
         return colorForLetter;
     }
 
+    /**
+     * Function that displays the rules of the game before start of game
+     */
     public static void gameRules() {
         String rules = "<html><font size='5' color=purple>HOW TO PLAY</font>" +
                 "\nGuess the wordle in 6 tries\n" +
@@ -199,6 +210,10 @@ public class WordleGui extends JFrame implements ActionListener {
 
         JOptionPane.showOptionDialog(null, rules,"Game Rules",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,null,null);
     }
+
+    /**
+     * The following function displays the statistics for the played game
+     */
     public static void gameStats() {
         StringBuilder stats = new StringBuilder("<html><font size='5' color=purple>Statistics</font></html>");
                stats.append("\n<html><font size='3' >Win: ").append(score).append("%</font></html>");
