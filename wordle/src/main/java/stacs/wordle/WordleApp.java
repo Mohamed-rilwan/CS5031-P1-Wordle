@@ -8,7 +8,10 @@ import java.util.*;
 import java.nio.file.Path;
 
 public class WordleApp {
-    public static final String filePath = "src\\main\\resources\\wordlist.txt";
+    public static final String filePath = "src\\test\\resources\\wordlist-test.txt";
+    public static int score = 0;
+    public static ArrayList<String> guesses = new ArrayList<>();
+    public static final int maxTries = 6;
 
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Welcome to CS5031 - Wordle");
@@ -55,7 +58,6 @@ public class WordleApp {
         return words.get(new Random().nextInt(words.size()));
     }
 
-
     /**
      * This method is used to check if the
      * selected word for the day matches with the
@@ -65,22 +67,31 @@ public class WordleApp {
      * @param wordForTheDay - the word that is selected for the day
      * @return - true if the complete word matches
      */
-    public static boolean matchUserInput(String wordForTheDay, String input) {
+    public static boolean matchUserInput(String wordForTheDay, String input, int trialNumber) {
+        int guessScore = 0;
         boolean status = true;
+        StringBuilder guess = new StringBuilder();
         String[] inputCharacters = input.toLowerCase().split("");
         String[] guessCharacters = wordForTheDay.toLowerCase().split("");
-        List<String> vowelsList = Arrays.asList(wordForTheDay.split(""));
+        List<String> wordForTheDayList = Arrays.asList(wordForTheDay.split(""));
         for (int index = 0; index < inputCharacters.length; index++) {
-            if (inputCharacters[index].equalsIgnoreCase(vowelsList.get(index))) {
+            if (inputCharacters[index].equalsIgnoreCase(wordForTheDayList.get(index))) {
                 System.out.println(ConsoleColor.GREEN + inputCharacters[index] + ConsoleColor.RESET + " : " + ConsoleColor.GREEN_BACKGROUND + "Correct" + ConsoleColor.RESET);
-            } else if ((!inputCharacters[index].equals(guessCharacters[index])) && vowelsList.contains(inputCharacters[index])) {
+                guessScore += 10;
+                guess.append("g");
+            } else if ((!inputCharacters[index].equals(guessCharacters[index])) && wordForTheDayList.contains(inputCharacters[index])) {
                 System.out.println(ConsoleColor.YELLOW + inputCharacters[index] + ConsoleColor.RESET + " : " + ConsoleColor.YELLOW_BACKGROUND + "Present" + ConsoleColor.RESET);
+                guessScore += 5;
                 status = false;
+                guess.append("y");
             } else {
                 System.out.println(ConsoleColor.RED + inputCharacters[index] + ConsoleColor.RESET + " : " + ConsoleColor.RED_BACKGROUND + "Incorrect" + ConsoleColor.RESET);
                 status = false;
+                guess.append("r");
             }
         }
+        score += (guessScore == 50 ? trialNumber : 1) * ((guessScore * 20) / 50);
+        guesses.add(guess.toString());
         return status;
     }
 
@@ -96,23 +107,27 @@ public class WordleApp {
         return validWords.contains(input);
     }
 
+    /**
+     * The following method initializes wordle game,
+     * by checking the user input and matching with the word for the day
+     *
+     * @throws FileNotFoundException - when the given file path doesnt exists
+     */
     public static void wordleGame() throws FileNotFoundException {
-        int maxTries = 6;
         int trial = 1;
-
         ArrayList<String> wordList = loadWordlist(filePath);
         String wordOfTheDay = randomWordSelector(filePath);
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
         boolean status = false;
         do {
-            System.out.println("Enter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3 ? "third" : trial == 4 ? "fourth" : trial == 5 ? "fifth" : "sixth") + " guess");
+            System.out.println("\nEnter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3 ? "third" : trial == 4 ? "fourth" : trial == 5 ? "fifth" : "sixth") + " guess");
             String userGuess = scanner.nextLine().trim();
             if (userGuess.length() != 5) {
                 System.out.println("Please enter a valid 5-letter word");
-            } else if (!wordList.contains(userGuess)) {
-                System.out.println("Not a valid english word");
+            } else if (!wordList.contains(userGuess.toLowerCase())) {
+                System.out.println("Not a valid English word");
             } else {
-                status = matchUserInput(wordOfTheDay, userGuess);
+                status = matchUserInput(wordOfTheDay, userGuess, maxTries - trial);
                 trial++;
                 if (status) {
                     System.out.println("Congratulations! Word of the day : " + wordOfTheDay);
@@ -122,8 +137,12 @@ public class WordleApp {
         }
         while (trial < maxTries + 1);
         System.out.println(!status ? "Better luck next time!" + "\n" + "Word of the day : " + wordOfTheDay : "");
+        gameStats();
     }
 
+    /**
+     * The following method displays rules of the game to the user.
+     */
     public static void gameRules() {
         System.out.println("\nHOW TO PLAY\nGuess the wordle in 6 tries \n");
         System.out.println("• Each guess must be a valid 5-letter word.\n• The color of the letters will change to show how close your guess was to the word.\n");
@@ -136,6 +155,29 @@ public class WordleApp {
         System.out.println("Letters " + ConsoleColor.GREEN + "h, p ,p" + ConsoleColor.RESET + " are in correct spot, and letter "
                 + ConsoleColor.YELLOW + "y" + ConsoleColor.RESET + " is in the word but in wrong position and letter "
                 + ConsoleColor.RED + "e" + ConsoleColor.RESET + " is not in any spot ");
-        System.out.println("The Correct word is HAPPY\n");
+        System.out.println("The Correct word is HAPPY");
+    }
+
+    /**
+     * The following method displays final stats of the game to the user.
+     */
+    public static void gameStats() {
+        System.out.println("\t\t STATISTICS");
+        System.out.println("\t\twin: " + score + "%");
+        System.out.println("Guess Distribution");
+        int index = 1;
+        for (String guess : guesses) {
+            System.out.print(index + ": ");
+            char[] wordGuess = guess.toCharArray();
+            for (int wordIndex = 0; wordIndex < guess.length(); wordIndex++) {
+                System.out.print(wordGuess[wordIndex] == 'g' ? ConsoleColor.WHITE + "|" + ConsoleColor.GREEN_BACKGROUND_BRIGHT + "  " +  ConsoleColor.WHITE + "|" :
+                        wordGuess[wordIndex] == 'y' ? ConsoleColor.WHITE + "|" +  ConsoleColor.YELLOW_BACKGROUND_BRIGHT + "  " + ConsoleColor.WHITE + "|"  :
+                                ConsoleColor.WHITE + "|" + ConsoleColor.RED_BACKGROUND_BRIGHT + "  " + ConsoleColor.WHITE + "|" );
+            }
+
+            System.out.println("\n" + ConsoleColor.RESET);
+            index++;
+        }
+
     }
 }

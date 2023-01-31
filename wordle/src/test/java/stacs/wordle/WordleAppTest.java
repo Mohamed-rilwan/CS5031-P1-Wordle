@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WordleAppTest
 {
-
     public final String testFilePath = "src\\test\\resources\\wordlist-test.txt";
     public final String wordFilePath = "src\\main\\resources\\wordlist.txt";
     @Test
@@ -36,12 +35,12 @@ public class WordleAppTest
     public void matchTestWord(){
         String wordOfTheDay = "fetch";
         String userInput = "fetch";
-        boolean isMatch = WordleApp.matchUserInput(wordOfTheDay, userInput);
+        boolean isMatch = WordleApp.matchUserInput(wordOfTheDay, userInput, 5);
         assertTrue(isMatch);
 
         String wordOfTheDay1 = "fetch";
         String userInput1 = "feSeh";
-        boolean isMatch1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1);
+        boolean isMatch1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1 , 5);
         assertFalse(isMatch1);
     }
 
