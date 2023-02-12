@@ -1,8 +1,12 @@
 package stacs.wordle;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,6 +15,22 @@ public class WordleAppTest
 {
     public final String testFilePath = "src\\test\\resources\\wordlist-test.txt";
     public final String wordFilePath = "src\\main\\resources\\wordlist.txt";
+
+    private PrintStream console;
+    private ByteArrayOutputStream bytes;
+
+    @BeforeEach
+    public void setUp() {
+        bytes   = new ByteArrayOutputStream();
+        console = System.out;
+        System.setOut(new PrintStream(bytes));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        System.setOut(console);
+    }
+
     @Test
     public void shouldLoadWordlist() throws FileNotFoundException
     {
@@ -69,4 +89,20 @@ public class WordleAppTest
         boolean isMatch3 = WordleApp.isValidWord(invalidWord, wordlist);
         assertFalse(isMatch3);
     }
+
+//    @Test
+//    public void twoIncorrectLetter() throws FileNotFoundException {
+//        String testWord = "exile";
+//        String wordOfTheWord = "cache";
+//        //
+//        try
+//        {
+//            WordleApp app = new WordleApp();
+//            app.main(new String[] {});
+//        }
+//        finally {
+//            System.setOut(console);
+//        }
+//
+//    }
 }

@@ -38,7 +38,7 @@ public class WordleGui extends JFrame implements ActionListener {
         try {
             wordForTheDay = WordleApp.randomWordSelector(WordleApp.filePath);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Invalid file path for word list");
         }
     }
 
@@ -84,7 +84,8 @@ public class WordleGui extends JFrame implements ActionListener {
         System.out.println("Welcome to CS5031 - Wordle");
         WordleApp.gameRules();
         answer = new char[5];
-        for (int index = 0; index < maxTries - 1; index++) answer[index] = wordForTheDay.charAt(index);
+        for (int index = 0; index < maxTries - 1; index++)
+            answer[index] = wordForTheDay.charAt(index);
         input = new char[5];
     }
 
@@ -109,15 +110,24 @@ public class WordleGui extends JFrame implements ActionListener {
         EnterWord();
     }
 
+    /**
+     * Check if the word is valid and perform word match
+     */
     public static void EnterWord() {
-        if (WordleApp.isValidWord(guess.getText(), words)) ButtonPressed();
+        if (WordleApp.isValidWord(guess.getText(), words))
+            ButtonPressed();
         else {
-            JOptionPane.showMessageDialog(frame, "Not a valid English word\nPlease enter a valid 5-letter word", "Invalid Word", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Not a valid English word\nPlease enter a valid 5-letter word",
+                    "Invalid Word", JOptionPane.ERROR_MESSAGE);
             appTitle = new JLabel("Not a valid English word");
             System.out.println("Not a valid English word");
         }
     }
 
+    /**
+     * This method is used to compute the user input and check its correctness
+     * against the word of the day
+     */
     public static void ButtonPressed() {
         guess.setBounds(60, 50 + ((tries + 1) * 25), 75, 25);
         String userInput = guess.getText().toLowerCase();
@@ -130,21 +140,27 @@ public class WordleGui extends JFrame implements ActionListener {
             }
         }
         finalGuesses.add(letterColor);
-        if (status || tries > maxTries - 1) EndWordle();
+        if (status || tries > maxTries - 1)
+            EndWordle();
 
-        String finalString = (
-                "<html><font size='5' color=" + letterColor[0] + ">  " + userInput.toUpperCase().charAt(0) + " </font> <font            " +
-                        "<html><font size='5' color=" + letterColor[1] + ">  " + userInput.toUpperCase().charAt(1) + " </font> <font            " +
-                        "<html><font size='5' color=" + letterColor[2] + ">  " + userInput.toUpperCase().charAt(2) + " </font> <font            " +
-                        "<html><font size='5' color=" + letterColor[3] + ">  " + userInput.toUpperCase().charAt(3) + " </font> <font            " +
-                        "<html><font size='5' color=" + letterColor[4] + ">  " + userInput.toUpperCase().charAt(4) + " </font> <font            ");
+        String finalString = ("<html><font size='5' color=" + letterColor[0] + ">  " + userInput.toUpperCase().charAt(0)
+                + " </font> <font            " +
+                "<html><font size='5' color=" + letterColor[1] + ">  " + userInput.toUpperCase().charAt(1)
+                + " </font> <font            " +
+                "<html><font size='5' color=" + letterColor[2] + ">  " + userInput.toUpperCase().charAt(2)
+                + " </font> <font            " +
+                "<html><font size='5' color=" + letterColor[3] + ">  " + userInput.toUpperCase().charAt(3)
+                + " </font> <font            " +
+                "<html><font size='5' color=" + letterColor[4] + ">  " + userInput.toUpperCase().charAt(4)
+                + " </font> <font            ");
         setNextLabel(finalString);
         guess.setText("");
     }
 
     /**
-     * Methods to check if each of the entered input is valid
-     * @param InputWordleWord  - users guesses during the game
+     * Methods to check the correctness of the entered input.
+     * 
+     * @param InputWordleWord - users guesses during the game
      * @return array of strings that states the correct position of letters
      */
     public static String[] playWordle(String InputWordleWord) {
@@ -155,31 +171,46 @@ public class WordleGui extends JFrame implements ActionListener {
         for (int i = 0; i < 5; i++) {
             input[i] = R1.charAt(i);
         }
-        for (int i = 0; i < 5; i++) answer[i] = wordForTheDay.charAt(i);
-        return ReturnColorOfLetters(input, answer,maxTries - tries);
+        for (int i = 0; i < 5; i++)
+            answer[i] = wordForTheDay.charAt(i);
+        return ReturnColorOfLetters(input, answer, maxTries - tries);
     }
 
+    /**
+     * @param string append word to the particular guess
+     */
     public static void setNextLabel(String string) {
         guesses[tries - 1].setText(string);
     }
 
-    public static String[] ReturnColorOfLetters(char[] inputWord, char[] correctWord,int trialNumber) {
+    /**
+     * This method is used to colorize the input guess based on its match against
+     * the correct word
+     * and computes the score of the particular guess
+     *
+     * @param inputWord   - character array of the usr input
+     * @param correctWord - word choosen for the game
+     * @param trialNumber - user guess trial number
+     * @return - colored output based on the user word entry
+     */
+    public static String[] ReturnColorOfLetters(char[] inputWord, char[] correctWord, int trialNumber) {
         int guessScore = 0;
-        String[] colorForLetter = {"red", "red", "red", "red", "red"};
+        // Instantiating with all red colored letters
+        String[] colorForLetter = { "red", "red", "red", "red", "red" };
 
-        for (int i = 0; i < 5; i++) {
-            if (inputWord[i] == correctWord[i]) {
-                correctWord[i] = '-';
-                colorForLetter[i] = "green";
+        for (int index = 0; index < 5; index++) {
+            if (inputWord[index] == correctWord[index]) {
+                correctWord[index] = '-';
+                colorForLetter[index] = "green";
                 guessScore += 10;
             }
         }
 
-        for (int j = 0; j < 5; j++) {
-            for (int k = 0; k < 5; k++) {
-                if (inputWord[j] == correctWord[k] && !colorForLetter[j].equals("green")) {
-                    colorForLetter[j] = "yellow";
-                    correctWord[k] = '-';
+        for (int row = 0; row < 5; row++) {
+            for (int column = 0; column < 5; column++) {
+                if (inputWord[row] == correctWord[column] && !colorForLetter[row].equals("green")) {
+                    colorForLetter[row] = "yellow";
+                    correctWord[column] = '-';
                     guessScore += 5;
                 }
             }
@@ -205,10 +236,12 @@ public class WordleGui extends JFrame implements ActionListener {
                 "\n<html><font color=green>p</font> : <font color=green>Correct</font></html>, " +
                 "\n<html><font color=green>p</font> : <font color=green>Correct</font></html>, " +
                 "\n<html><font color=red>y</font> : <font color=red>Incorrect</font></html>" +
-                "\n<html>Letters <font color=green>h, p, p</font> are in correct spot, and letter<font color=orange> y </font>is in the word but in wrong position and letter <font color=red> e </font> is not in any spot </html>, " +
+                "\n<html>Letters <font color=green>h, p, p</font> are in correct spot, and letter<font color=orange> y </font>is in the word but in wrong position and letter <font color=red> e </font> is not in any spot </html>, "
+                +
                 "\n<html>The Correct word is HAPPY" + "</html>";
 
-        JOptionPane.showOptionDialog(null, rules,"Game Rules",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,null,null);
+        JOptionPane.showOptionDialog(null, rules, "Game Rules", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, null, null);
     }
 
     /**
@@ -216,12 +249,19 @@ public class WordleGui extends JFrame implements ActionListener {
      */
     public static void gameStats() {
         StringBuilder stats = new StringBuilder("<html><font size='5' color=purple>Statistics</font></html>");
-               stats.append("\n<html><font size='3' >Win: ").append(score).append("%</font></html>");
+        stats.append("\n<html><font size='3' >Win: ").append(score).append("%</font></html>");
         for (String[] guess : finalGuesses) {
-            stats.append("\n<html><font style=\"background-color:").append(guess[0]).append(";color:").append(guess[0]).append("\">.....</font>  ").append("<font style=\"background-color:").append(guess[1]).append(";color:").append(guess[1]).append("\">.....</font>  ").append("<font style=\"background-color:").append(guess[2]).append(";color:").append(guess[2]).append("\">.....</font>  ").append("<font style=\"background-color:").append(guess[3]).append(";color:").append(guess[3]).append("\">.....</font>  ").append("<font style=\"background-color:").append(guess[4]).append(";color:").append(guess[4]).append("\">.....</font>  \n");
+            stats.append("\n<html><font style=\"background-color:").append(guess[0]).append(";color:").append(guess[0])
+                    .append("\">.....</font>  ").append("<font style=\"background-color:").append(guess[1])
+                    .append(";color:").append(guess[1]).append("\">.....</font>  ")
+                    .append("<font style=\"background-color:").append(guess[2]).append(";color:").append(guess[2])
+                    .append("\">.....</font>  ").append("<font style=\"background-color:").append(guess[3])
+                    .append(";color:").append(guess[3]).append("\">.....</font>  ")
+                    .append("<font style=\"background-color:").append(guess[4]).append(";color:").append(guess[4])
+                    .append("\">.....</font>  \n");
         }
-
-        JOptionPane.showOptionDialog(null, stats.toString(),"Game stats",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,null,null);
+        JOptionPane.showOptionDialog(null, stats.toString(), "Game stats", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, null, null);
     }
 
 }

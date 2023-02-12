@@ -1,6 +1,5 @@
 crave
 craft
 craze
-crane
-crann
 maven
+debug
