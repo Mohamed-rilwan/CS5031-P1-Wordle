@@ -15,13 +15,11 @@ public class WordleAppTest
 {
     public final String testFilePath = "src\\test\\resources\\wordlist-test.txt";
     public final String wordFilePath = "src\\main\\resources\\wordlist.txt";
-
     private PrintStream console;
-    private ByteArrayOutputStream bytes;
 
     @BeforeEach
     public void setUp() {
-        bytes   = new ByteArrayOutputStream();
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         console = System.out;
         System.setOut(new PrintStream(bytes));
     }
@@ -90,19 +88,27 @@ public class WordleAppTest
         assertFalse(isMatch3);
     }
 
-//    @Test
-//    public void twoIncorrectLetter() throws FileNotFoundException {
-//        String testWord = "exile";
-//        String wordOfTheWord = "cache";
-//        //
-//        try
-//        {
-//            WordleApp app = new WordleApp();
-//            app.main(new String[] {});
-//        }
-//        finally {
-//            System.setOut(console);
-//        }
-//
-//    }
+
+    /**
+     * The following test checks if a character is available in only one position as expected
+     * The earlier scenarios would have produced a result where the presence of character 'e' in the first place as a partial guess
+     * and the presence of character 'e' in the last place as an exact guess
+     * But the required result will be to identify the first postiion of 'e' as invalid and the last as valid position
+     */
+    @Test
+    public void twoIncorrectLetter() {
+        String testWord = "exile";
+        String wordOfTheWord = "cache";
+
+        String matchResult = WordleApp.matchUserInput(wordOfTheWord, testWord,1);
+
+        //Previous check result
+        assertNotEquals("yrrrg", matchResult);
+
+        //New expected result
+        assertEquals(matchResult,"rrrrg");
+
+
+
+    }
 }
