@@ -55,13 +55,13 @@ public class WordleAppTest
     public void matchTestWord(){
         String wordOfTheDay = "fetch";
         String userInput = "fetch";
-        boolean isMatch = WordleApp.matchUserInput(wordOfTheDay, userInput, 5);
-        assertTrue(isMatch);
+        String matchResult = WordleApp.matchUserInput(wordOfTheDay, userInput, 5);
+        assertEquals( matchResult,"ggggg");
 
         String wordOfTheDay1 = "fetch";
         String userInput1 = "feSeh";
-        boolean isMatch1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1 , 5);
-        assertFalse(isMatch1);
+        String matchResult1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1 , 5);
+        assertNotEquals( matchResult1,"ggggg");
     }
 
     //Test for exception thrown on invalid file path
