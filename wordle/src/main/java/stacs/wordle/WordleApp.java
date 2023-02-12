@@ -13,8 +13,6 @@ public class WordleApp {
 
     //Since only unique words are allowed, the words and the result can be added to a map list as a key value pair
     public static Map<String,String> guesses = new HashMap<>();
-    public static ArrayList<String> guessesResult = new ArrayList<>();
-    public static ArrayList<String> userGuesses = new ArrayList<>();
     public static final int maxTries = 6;
 
     public static int trial = 1 ;
@@ -77,9 +75,9 @@ public class WordleApp {
      * @param wordForTheDay - the word that is selected for the day
      * @return - true if the complete word matches
      */
-    public static Boolean matchUserInput(String wordForTheDay, String input, int trialNumber) {
+    public static String matchUserInput(String wordForTheDay, String input, int trialNumber) {
         int guessScore = 0;
-        boolean status = true;
+
         StringBuilder guess = new StringBuilder();
         String[] inputCharacters = input.toLowerCase().split("");
         String[] guessCharacters = wordForTheDay.toLowerCase().split("");
@@ -94,11 +92,9 @@ public class WordleApp {
                 System.out.println(ConsoleTextColor.YELLOW + inputCharacters[index] + ConsoleTextColor.RESET + " : " + ConsoleTextColor.YELLOW_BACKGROUND + "Present" + ConsoleTextColor.RESET);
                 //User gets 5 points for each partial guess
                 guessScore += 5;
-                status = false;
                 guess.append("y");
             } else {
                 System.out.println(ConsoleTextColor.RED + inputCharacters[index] + ConsoleTextColor.RESET + " : " + ConsoleTextColor.RED_BACKGROUND + "Incorrect" + ConsoleTextColor.RESET);
-                status = false;
                 guess.append("r");
             }
         }
@@ -114,9 +110,7 @@ public class WordleApp {
                      Total score - 90%
         */
         score += (guessScore == 50 ? trialNumber : 1) * ((guessScore * 20) / 50);
-        guessesResult.add(guess.toString());
-        guesses.put(input, guess.toString());
-        return status;
+        return guess.toString();
     }
 
     /**
@@ -141,30 +135,30 @@ public class WordleApp {
         ArrayList<String> wordList = loadWordlist(filePath);
         String wordOfTheDay = randomWordSelector(filePath);
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
-//        Map<String, String> guessResult =  new HashMap<>();
-        boolean status = false;
+        String matchResult = null;
         do {
-            if(userGuesses.size() > 0) { printPreviousTrialResult(); }
+            if(guesses.size() > 0) { printPreviousTrialResult(); }
             System.out.println("Enter your " + (trial == 1 ? "first" : trial == 2 ? "second" : trial == 3 ? "third" : trial == 4 ? "fourth" : trial == 5 ? "fifth" : "last") + " guess");
             String userGuess = scanner.nextLine().trim();
             if (userGuess.length() != 5) {
                 System.out.println("Please enter a valid 5-letter word");
             } else if (!wordList.contains(userGuess.toLowerCase())) {
                 System.out.println("Not a valid English word");
-            } else if (userGuesses.contains(userGuess)){
+            } else if (guesses.containsKey(userGuess)){
                 System.out.println("Word already entered");
             }            else {
-                userGuesses.add(userGuess);
-                status = matchUserInput(wordOfTheDay, userGuess, maxTries - trial);
+                matchResult = matchUserInput(wordOfTheDay, userGuess, maxTries - trial);
+                guesses.put(userGuess,matchResult);
                 setTrial(trial+1);
-                if (status) {
+                if (matchResult.equals("ggggg")) {
                     System.out.println("\nCongratulations! Word of the day : " + wordOfTheDay);
                     break;
                 }
             }
         }
         while (trial < maxTries + 1);
-        System.out.println(!status ? "\nBetter luck next time!" + "\n" + "Word of the day : " + wordOfTheDay : "");
+        assert matchResult != null;
+        System.out.println(!matchResult.equals("ggggg") ? "\nBetter luck next time!" + "\n" + "Word of the day : " + wordOfTheDay : "");
         gameStats();
     }
 
@@ -194,7 +188,7 @@ public class WordleApp {
         System.out.println("\twin: " + score + "%");
         System.out.println("Guess Distribution");
         int index = 1;
-        for (String guess : guessesResult) {
+        for (String guess : guesses.values()) {
             System.out.print(index + ": ");
             char[] wordGuess = guess.toCharArray();
             for (int wordIndex = 0; wordIndex < guess.length(); wordIndex++) {
@@ -212,19 +206,20 @@ public class WordleApp {
      * This method displays the previous trial result to the user
      */
     public static void printPreviousTrialResult(){
-        System.out.println("\nPrevious Guess");
-        for(int index = 0; index < userGuesses.size(); index++ ){
+        System.out.println("\n*** Previous Guess ***");
+        for(int index = 0; index < guesses.size(); index++ ){
+            System.out.print(index + 1 + ".");
             int charIndex = 0;
-            for (char g : guessesResult.get(index).toCharArray()) {
+            for (char g : (String.valueOf(guesses.values().toArray()[index])).toCharArray()) {
                 switch (g) {
                     case 'g':
-                    System.out.print("\t" + ConsoleTextColor.GREEN + userGuesses.get(index).charAt(charIndex) + ConsoleTextColor.RESET );
+                    System.out.print("\t" + ConsoleTextColor.GREEN + String.valueOf(guesses.keySet().toArray()[index]).charAt(charIndex) + ConsoleTextColor.RESET );
                         break;
                     case 'r':
-                        System.out.print("\t" +ConsoleTextColor.RED + userGuesses.get(index).charAt(charIndex) + ConsoleTextColor.RESET);
+                        System.out.print("\t" +ConsoleTextColor.RED + String.valueOf(guesses.keySet().toArray()[index]).charAt(charIndex) + ConsoleTextColor.RESET);
                         break;
                     case 'y':
-                        System.out.print("\t" +ConsoleTextColor.YELLOW + userGuesses.get(index).charAt(charIndex) + ConsoleTextColor.RESET);
+                        System.out.print("\t" +ConsoleTextColor.YELLOW + String.valueOf(guesses.keySet().toArray()[index]).charAt(charIndex) + ConsoleTextColor.RESET);
                         break;
                     default: break;
                 }
