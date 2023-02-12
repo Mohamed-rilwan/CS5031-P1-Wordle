@@ -12,7 +12,7 @@ public class WordleApp {
     public static int score = 0;
 
     //Since only unique words are allowed, the words and the result can be added to a map list as a key value pair
-    public static Map<String,String> guesses = new HashMap<>();
+    public static LinkedHashMap<String,String> guesses = new LinkedHashMap<>();
     public static final int maxTries = 6;
 
     public static int trial = 1 ;
