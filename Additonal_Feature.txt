@@ -1,4 +1,0 @@
-New feature :
-
-
-1. Do not allow user to reenter the alreay entered word - this is allowed in wordle
