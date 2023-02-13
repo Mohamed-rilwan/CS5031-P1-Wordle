@@ -1,12 +1,9 @@
 package stacs.wordle;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,19 +12,13 @@ public class WordleAppTest
 {
     public final String testFilePath = "src\\test\\resources\\wordlist-test.txt";
     public final String wordFilePath = "src\\main\\resources\\wordlist.txt";
-    private PrintStream console;
+    private WordleService wordleService;
 
     @BeforeEach
     public void setUp() {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        console = System.out;
-        System.setOut(new PrintStream(bytes));
+        wordleService = new WordleService();
     }
 
-    @AfterEach
-    public void tearDown() {
-        System.setOut(console);
-    }
 
     @Test
     public void shouldLoadWordlist() throws FileNotFoundException
@@ -53,12 +44,12 @@ public class WordleAppTest
     public void matchTestWord(){
         String wordOfTheDay = "fetch";
         String userInput = "fetch";
-        String matchResult = WordleApp.matchUserInput(wordOfTheDay, userInput, 5);
+        String matchResult = wordleService.matchWord(wordOfTheDay, userInput);
         assertEquals( matchResult,"ggggg");
 
         String wordOfTheDay1 = "fetch";
         String userInput1 = "feSeh";
-        String matchResult1 = WordleApp.matchUserInput(wordOfTheDay1, userInput1 , 5);
+        String matchResult1 = wordleService.matchWord(wordOfTheDay1, userInput1);
         assertNotEquals( matchResult1,"ggggg");
     }
 
@@ -100,15 +91,13 @@ public class WordleAppTest
         String testWord = "exile";
         String wordOfTheWord = "cache";
 
-        String matchResult = WordleApp.matchUserInput(wordOfTheWord, testWord,1);
+        String matchResult = wordleService.matchWord(wordOfTheWord, testWord);
 
         //Previous check result
         assertNotEquals("yrrrg", matchResult);
 
         //New expected result
         assertEquals(matchResult,"rrrrg");
-
-
 
     }
 }

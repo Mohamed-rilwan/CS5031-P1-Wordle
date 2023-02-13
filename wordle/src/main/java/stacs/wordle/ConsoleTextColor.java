@@ -1,4 +1,8 @@
 package stacs.wordle;
+
+/**
+ * This class defines all the required color needed to display appropriate game result in console
+ */
 public class ConsoleTextColor {
         // Reset
         public static final String RESET = "\033[0m";  // Text Reset

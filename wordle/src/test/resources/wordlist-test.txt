@@ -1,5 +1,3 @@
-crave
-craft
-craze
 maven
 debug
+craft
