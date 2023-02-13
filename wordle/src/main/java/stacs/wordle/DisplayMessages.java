@@ -129,7 +129,7 @@ public class DisplayMessages {
      */
     public void gameStats(Map<String, String> guesses, int score) {
         System.out.println("\n\tSTATISTICS");
-        System.out.println("\twin: " + score + "%");
+        System.out.println("\tScore: " + score + "%");
         System.out.println("Guess Distribution");
         int index = 1;
         for (String guess : guesses.values()) {
@@ -137,7 +137,7 @@ public class DisplayMessages {
             char[] wordGuess = guess.toCharArray();
             for (int wordIndex = 0; wordIndex < guess.length(); wordIndex++) {
                 System.out.print(wordGuess[wordIndex] == 'g' ? ConsoleTextColor.WHITE + "|" + ConsoleTextColor.GREEN_BACKGROUND_BRIGHT + "  " + ConsoleTextColor.WHITE + "|" :
-                        wordGuess[wordIndex] == 'y' ? ConsoleTextColor.WHITE + "|" + ConsoleTextColor.YELLOW_BACKGROUND_BRIGHT + "  " + ConsoleTextColor.WHITE + "|" :
+                        wordGuess[wordIndex] == 'y' ? ConsoleTextColor.WHITE + "|" + ConsoleTextColor.YELLOW_BACKGROUND + "  " + ConsoleTextColor.WHITE + "|" :
                                 ConsoleTextColor.WHITE + "|" + ConsoleTextColor.RED_BACKGROUND_BRIGHT + "  " + ConsoleTextColor.WHITE + "|");
             }
             System.out.println("\n" + ConsoleTextColor.RESET);
@@ -177,7 +177,7 @@ public class DisplayMessages {
      */
     public void gameStatsGui(int score, LinkedHashMap<String, String> guessResult,String wordForTheDay) {
         StringBuilder stats = new StringBuilder("<html><font size='5' color=purple>Statistics</font></html>");
-        stats.append("\n<html><font size='3' >Win: ").append(score).append("%</font></html>");
+        stats.append("\n<html><font size='3' >Score: ").append(score).append("%</font></html>");
         stats.append("\n<html><font size='3' >Guess Distribution: ").append("</font></html>");
         for (String guess : guessResult.values()) {
             stats.append("\n<html><font style=\"background-color:").append(getColorText(guess.charAt(0))).append(";color:").append(getColorText(guess.charAt(0)))
