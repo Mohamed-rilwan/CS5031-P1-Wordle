@@ -3,8 +3,6 @@ package stacs.wordle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Random;
@@ -16,7 +14,9 @@ import java.util.Scanner;
  * @author - matriculation Id - 220032472
  */
 public class WordleApp {
-    public static final String filePath = "src\\main\\resources\\wordlist.txt";
+
+    public static final String filePath =  "src" + File.separator + "main" + File.separator  + "resources" + File.separator + "wordlist.txt";
+
     public static final int maxTries = 6;
     public static int score = 0;
     //Since only unique words are allowed, the words and the result can be added to a map list as a key value pair
@@ -39,30 +39,7 @@ public class WordleApp {
         wordleGame();
     }
 
-    /**
-     * This method is used read a file using a file path
-     * and return a list of words in it as an array
-     *
-     * @return list of all words in the given file.
-     * @throws FileNotFoundException when the file is not found in the given
-     *                               location.
-     */
-    protected static ArrayList<String> loadWordlist(String wordlistPath) throws FileNotFoundException {
-        ArrayList<String> words = new ArrayList<>();
-        File textFile = new File(wordlistPath);
-        try {
-            Scanner fileReader = new Scanner(textFile);
-            while (fileReader.hasNextLine()) {
-                words.add(fileReader.nextLine());
-            }
-            fileReader.close();
-        } catch (FileNotFoundException e) {
-            Path path = Paths.get(wordlistPath);
-            Path fileName = path.getFileName();
-            throw new FileNotFoundException("File not found: " + fileName.toString());
-        }
-        return words;
-    }
+
 
     /**
      * This method is used read a file using a given file path and return a word at random
@@ -74,7 +51,7 @@ public class WordleApp {
      *                               location.
      */
     public static String randomWordSelector(String filePath) throws FileNotFoundException {
-        ArrayList<String> words = loadWordlist(filePath);
+        ArrayList<String> words = WordleService.loadWordlist(filePath);
         return words.get(new Random().nextInt(words.size()));
     }
 
@@ -98,7 +75,7 @@ public class WordleApp {
      * @throws FileNotFoundException - when the given file path doesn't exist
      */
     public static void wordleGame() throws FileNotFoundException {
-        ArrayList<String> wordList = loadWordlist(filePath);
+        ArrayList<String> wordList = WordleService.loadWordlist(filePath);
         String wordOfTheDay = randomWordSelector(filePath);
         Scanner scanner = new Scanner(new InputStreamReader(System.in));
         String matchResult = null;

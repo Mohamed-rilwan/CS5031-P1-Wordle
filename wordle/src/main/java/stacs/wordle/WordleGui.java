@@ -22,11 +22,11 @@ public class WordleGui extends JFrame implements ActionListener {
     static ArrayList<String> words;
     static int score = 0;
     public static LinkedHashMap<String, String> guessesWithResult = new LinkedHashMap<>();
-
+    static WordleService wordleService = new WordleService();
 
     static {
         try {
-            words = WordleApp.loadWordlist(WordleApp.filePath);
+            words = WordleService.loadWordlist(WordleApp.filePath);
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Invalid file path for word list");
         }
@@ -37,7 +37,7 @@ public class WordleGui extends JFrame implements ActionListener {
     static String wordForTheDay;
 
     static DisplayMessages messages = new DisplayMessages();
-    static WordleService wordleService = new WordleService();
+
 
     static {
         try {

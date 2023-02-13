@@ -3,6 +3,7 @@ package stacs.wordle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -10,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WordleAppTest
 {
-    public final String testFilePath = "src\\test\\resources\\wordlist-test.txt";
-    public final String wordFilePath = "src\\main\\resources\\wordlist.txt";
+    public final String testFilePath =  "src" + File.separator + "test" + File.separator  + "resources" + File.separator + "wordlist-test.txt";
+    public final String wordFilePath = "src" + File.separator + "main" + File.separator  + "resources" + File.separator + "wordlist.txt";
     private WordleService wordleService;
 
     @BeforeEach
@@ -23,7 +24,7 @@ public class WordleAppTest
     @Test
     public void shouldLoadWordlist() throws FileNotFoundException
     {
-        ArrayList<String> wordlist = WordleApp.loadWordlist(testFilePath);
+        ArrayList<String> wordlist = WordleService.loadWordlist(testFilePath);
         // test wordlist only contains 3 words, so wordlist should have the size of 3
         assertEquals(3, wordlist.size());
     }
@@ -56,7 +57,7 @@ public class WordleAppTest
     //Test for exception thrown on invalid file path
     @Test
     public void inValidFile() {
-        Exception exception = assertThrows(FileNotFoundException.class, () -> WordleApp.loadWordlist("abc.txt"));
+        Exception exception = assertThrows(FileNotFoundException.class, () -> WordleService.loadWordlist("abc.txt"));
         String expectedMessage = "File not found: abc.txt";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
@@ -68,7 +69,7 @@ public class WordleAppTest
         String validWord1 = "fetch";
         String validWord2 = "cuppa";
         String invalidWord = "2";
-        ArrayList<String> wordlist = WordleApp.loadWordlist(wordFilePath);
+        ArrayList<String> wordlist = WordleService.loadWordlist(wordFilePath);
         boolean isMatch1 = WordleApp.isValidWord(validWord1, wordlist);
         assertTrue(isMatch1);
 
