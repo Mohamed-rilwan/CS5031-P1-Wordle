@@ -100,4 +100,35 @@ public class WordleAppTest
         assertEquals(matchResult,"rrrrg");
 
     }
+
+    /**
+     * The following test validated the scoring strategy
+     */
+    @Test
+    public void validateScoring() {
+
+        String guessResult = "ggggg";
+        String guessResult1 = "gryrg";
+        String guessResult2 = "yryry";
+
+
+        int score = wordleService.scoreCalculator(guessResult, 1);
+        int score1 = wordleService.scoreCalculator(guessResult1, 1);
+        int score2 = wordleService.scoreCalculator(guessResult2, 1);
+        int score3 = wordleService.scoreCalculator(guessResult, 3);
+
+        int expectedScoreResult = 20;
+        int expectedScoreResult1 = 10;
+        int expectedScoreResult2 = 6;
+        int expectedScoreResult3 = 60;
+
+        assertEquals(score, expectedScoreResult);
+        assertEquals(score1, expectedScoreResult1);
+        assertEquals(score2, expectedScoreResult2);
+        assertEquals(score3, expectedScoreResult3);
+
+
+        assertNotEquals(score,expectedScoreResult1);
+
+    }
 }
