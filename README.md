@@ -1,14 +1,14 @@
 ------
 
-## A Wordle game built in Maven Java and Swing for GUI. 
+# A Wordle game built in Maven Java and Swing for GUI. 
 
 ------
 
-# How does it work?
+## How does it work?
 The wordle game takes upto six inputs from users and matches with the selected word for the day. The list of all recognized words are placed in the wordlist.txt file.
 The game can be run using command ine and grapical user interface. 
 
-# Installation
+## Installation
 
 The game can be run using the following commands.
 
@@ -25,7 +25,7 @@ The game can be run using the following commands.
 To run the test cases run the following command
 -   `mvn test -Dtest=WordleAppTest`
 
-##Scoring Strategy
+## Scoring Strategy
 
 Since every word is unique, the scoring is based on the number of correct letters guessed and the attempts taken to guess the correct word.
 The score is calculated for each number of tries and correct letters guessed in each.
@@ -43,13 +43,15 @@ Total score percentage (score) - 90%
 The figure shows game statistics after all guesses
 
 
-# What is additional from the NYTimes Wordle?
+## What is additional from the NYTimes Wordle?
 The system does not allow the user to enter a guess word twice. This is currently allowed in Wordle, but in the implementation for this coursework, it is prevented, as removing this would allow the user to make a better guess, given there are only six tries.
 
-#Edge case
+## Edge case
 1. If the character is already in the other position and we entered it twice, what must happen
 Example: In the following case the letter “A” was used in multiple places, but was considered to be partial only in one position and not in both as the final word has only one “A”
+
 ![image](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/087e26f4-d309-4fae-ab3e-24fadba20b7e)
+
 This has been tackled after successive iterations of the logic refactoring.
 
 ## Code explanation
