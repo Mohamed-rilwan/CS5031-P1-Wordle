@@ -34,10 +34,16 @@ The score is calculated for each number of tries and correct letters guessed in 
 2. All yellow (5 points each) - Each try can fetch a total of 25 points
 3. All tries have a total of 20% weight overall multiplied by the descending number of tries that they take to guess.
 
-Example - If a user gets all partial (yellow) on the first try and guesses all in the second then the total score:
+Example:
+
+If a user gets all partial (yellow) on the first try and guesses all in the second then the total score:
+
 1st try - 25 points -> 10%
+
 2nd try - 50 points -> 80%
+
 Total score percentage (score) - 90%
+
 
 ![image](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/abd030a9-943a-44c8-ab5e-ef7bdab16d67)
 
