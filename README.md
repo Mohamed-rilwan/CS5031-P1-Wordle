@@ -69,7 +69,7 @@ This has been tackled after successive iterations of the logic refactoring.
 ![1](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/ff81e53b-fdcf-4173-a920-b9c6993e2476)
 ![2](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/32b3ee23-e6d5-4eed-82d7-d9c4ca063987)
 
-### Graphical Interface build on Swing
+### Graphical Interface built on Swing
 ![3](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/adf7c061-9806-4e98-b049-0e9f896a83b6)
 ![4](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/8c78d5de-b3c1-4c00-9f3e-e9f3895a30a1)
 
