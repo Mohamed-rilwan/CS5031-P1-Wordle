@@ -40,6 +40,7 @@ Example - If a user gets all partial (yellow) on the first try and guesses all i
 Total score percentage (score) - 90%
 
 ![image](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/abd030a9-943a-44c8-ab5e-ef7bdab16d67)
+
 The figure shows game statistics after all guesses
 
 
@@ -63,7 +64,16 @@ This has been tackled after successive iterations of the logic refactoring.
 - `WordList.txt` is the text file containing all logical 5-letter words in English.
 
   ## Game Screenshots
-![image](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/f57d842f-800c-4fc3-ba89-aa5fde99a514)
+  ### Command Line 
+
+![1](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/ff81e53b-fdcf-4173-a920-b9c6993e2476)
+![2](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/32b3ee23-e6d5-4eed-82d7-d9c4ca063987)
+
+### Graphical Interface build on Swing
+![3](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/adf7c061-9806-4e98-b049-0e9f896a83b6)
+![4](https://github.com/Mohamed-rilwan/Word-of-Wordle/assets/44545353/8c78d5de-b3c1-4c00-9f3e-e9f3895a30a1)
+
+
 
   
 
